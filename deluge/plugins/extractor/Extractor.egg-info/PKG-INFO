@@ -1,0 +1,19 @@
+Metadata-Version: 1.0
+Name: Extractor
+Version: 0.4
+Summary: Extract files upon torrent completion
+Home-page: http://deluge-torrent.org
+Author: Andrew Resch
+Author-email: andrewresch@gmail.com
+License: GPLv3
+Description: 
+        Extract files upon torrent completion
+        
+        Supports: .rar, .tar, .zip, .7z .tar.gz, .tgz, .tar.bz2, .tbz .tar.lzma, .tlz, .tar.xz, .txz
+        
+        Windows support: .rar, .zip, .tar, .7z, .xz, .lzma
+        ( Requires 7-zip installed: http://www.7-zip.org/ )
+        
+        Note: Will not extract with 'Move Completed' enabled
+        
+Platform: UNKNOWN

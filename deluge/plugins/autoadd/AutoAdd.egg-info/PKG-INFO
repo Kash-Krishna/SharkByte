@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: AutoAdd
+Version: 1.4
+Summary: Monitors folders for .torrent files.
+Home-page: http://dev.deluge-torrent.org/wiki/Plugins/AutoAdd
+Author: Chase Sterling
+Author-email: chase.sterling@gmail.com
+License: GPLv3
+Description: Monitors folders for .torrent files.
+Platform: UNKNOWN

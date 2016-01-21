@@ -1,0 +1,8 @@
+
+    [deluge.plugin.core]
+    Blocklist = blocklist:CorePlugin
+    [deluge.plugin.gtkui]
+    Blocklist = blocklist:GtkUIPlugin
+    [deluge.plugin.web]
+    Blocklist = blocklist:WebUIPlugin
+    

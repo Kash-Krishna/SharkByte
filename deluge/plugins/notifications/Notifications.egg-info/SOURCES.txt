@@ -1,0 +1,14 @@
+setup.py
+Notifications.egg-info/PKG-INFO
+Notifications.egg-info/SOURCES.txt
+Notifications.egg-info/dependency_links.txt
+Notifications.egg-info/entry_points.txt
+Notifications.egg-info/top_level.txt
+notifications/__init__.py
+notifications/common.py
+notifications/core.py
+notifications/gtkui.py
+notifications/test.py
+notifications/webui.py
+notifications/data/config.glade
+notifications/data/notifications.js

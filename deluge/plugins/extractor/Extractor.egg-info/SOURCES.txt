@@ -1,0 +1,14 @@
+setup.py
+Extractor.egg-info/PKG-INFO
+Extractor.egg-info/SOURCES.txt
+Extractor.egg-info/dependency_links.txt
+Extractor.egg-info/entry_points.txt
+Extractor.egg-info/top_level.txt
+extractor/__init__.py
+extractor/common.py
+extractor/core.py
+extractor/gtkui.py
+extractor/webui.py
+extractor/which.py
+extractor/data/extractor.js
+extractor/data/extractor_prefs.glade

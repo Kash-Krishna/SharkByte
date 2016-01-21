@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: Blocklist
+Version: 1.3
+Summary: Download and import IP blocklists
+Home-page: http://deluge-torrent.org
+Author: John Garland
+Author-email: johnnybg+deluge@gmail.com
+License: GPLv3
+Description: Download and import IP blocklists
+Platform: UNKNOWN

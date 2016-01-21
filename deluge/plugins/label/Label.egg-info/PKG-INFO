@@ -1,0 +1,14 @@
+Metadata-Version: 1.0
+Name: Label
+Version: 0.2
+Summary: Allows labels to be assigned to torrents
+Home-page: http://deluge-torrent.org
+Author: Martijn Voncken
+Author-email: mvoncken@gmail.com
+License: GPLv3
+Description: 
+        Allows labels to be assigned to torrents
+        
+        Also offers filters on state, tracker and keywords
+        
+Platform: UNKNOWN

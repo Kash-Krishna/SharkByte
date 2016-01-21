@@ -1,0 +1,17 @@
+Metadata-Version: 1.0
+Name: Notifications
+Version: 0.2
+Summary: Plugin which provides notifications to Deluge.
+Home-page: http://dev.deluge-torrent.org/
+Author: Pedro Algarvio
+Author-email: pedro@algarvio.me
+License: GPLv3
+Description: 
+        Plugin which provides notifications to Deluge
+        
+        Email, Popup, Blink and Sound notifications
+        
+        The plugin also allows other plugins to make
+         use of itself for their own custom notifications
+        
+Platform: UNKNOWN

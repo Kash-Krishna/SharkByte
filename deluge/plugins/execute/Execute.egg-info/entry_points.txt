@@ -1,0 +1,8 @@
+
+    [deluge.plugin.core]
+    Execute = execute:CorePlugin
+    [deluge.plugin.gtkui]
+    Execute = execute:GtkUIPlugin
+    [deluge.plugin.web]
+    Execute = execute:WebUIPlugin
+    

@@ -1,0 +1,14 @@
+setup.py
+AutoAdd.egg-info/PKG-INFO
+AutoAdd.egg-info/SOURCES.txt
+AutoAdd.egg-info/dependency_links.txt
+AutoAdd.egg-info/entry_points.txt
+AutoAdd.egg-info/top_level.txt
+autoadd/__init__.py
+autoadd/common.py
+autoadd/core.py
+autoadd/gtkui.py
+autoadd/webui.py
+autoadd/data/autoadd.js
+autoadd/data/autoadd_options.glade
+autoadd/data/config.glade

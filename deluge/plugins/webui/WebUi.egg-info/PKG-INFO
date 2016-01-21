@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: WebUi
+Version: 0.1
+Summary: Allows starting the web interface within the daemon.
+Home-page: http://deluge-torrent.org
+Author: Damien Churchill
+Author-email: damoxc@gmail.com
+License: GPLv3
+Description: Allows starting the web interface within the daemon.
+Platform: UNKNOWN

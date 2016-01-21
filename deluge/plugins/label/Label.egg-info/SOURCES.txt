@@ -1,0 +1,17 @@
+setup.py
+Label.egg-info/PKG-INFO
+Label.egg-info/SOURCES.txt
+Label.egg-info/dependency_links.txt
+Label.egg-info/entry_points.txt
+Label.egg-info/top_level.txt
+label/__init__.py
+label/core.py
+label/test.py
+label/webui.py
+label/data/label.js
+label/data/label_options.glade
+label/data/label_pref.glade
+label/gtkui/__init__.py
+label/gtkui/label_config.py
+label/gtkui/sidebar_menu.py
+label/gtkui/submenu.py
