@@ -100,7 +100,13 @@ Deluge.Toolbar = Ext.extend(Ext.Toolbar, {
 					text: _('Connection Manager'),
 					iconCls: 'x-deluge-connection-manager',
 					handler: this.onConnectionManagerClick,
-					scope: this
+				        scope: this
+				},{
+				        id: 'search',
+					text: _('Search'),
+					iconCls: 'icon-add',
+					handler: this.onPreferencesClick,
+				        scope: this
 				},'->',{
 					id: 'help',
 					iconCls: 'icon-help',
