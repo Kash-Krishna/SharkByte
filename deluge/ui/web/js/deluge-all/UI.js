@@ -58,7 +58,8 @@ deluge.ui = {
 	    deluge.toolbar = new Deluge.Toolbar();
 
 	    //Project Changes ------
-	    deluge.searchsidebar = new Deluge.SearchSidebar();
+	    deluge.searchSidebar = new Deluge.SearchSidebar();
+        deluge.searchWindow = new Deluge.add.SearchWindow();
 
 		this.detailsPanel = new Ext.Panel({
 			id: 'detailsPanel',
@@ -85,7 +86,7 @@ deluge.ui = {
 			items: [
 			    deluge.sidebar,
 			    //Project Change
-			    deluge.searchsidebar,
+			    deluge.searchSidebar,
 				this.detailsPanel,
 				deluge.torrents
 			],

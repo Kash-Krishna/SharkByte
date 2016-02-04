@@ -100,13 +100,13 @@ Deluge.Toolbar = Ext.extend(Ext.Toolbar, {
 					text: _('Connection Manager'),
 					iconCls: 'x-deluge-connection-manager',
 					handler: this.onConnectionManagerClick,
-				        scope: this
+				    scope: this
 				},{
-				        id: 'search',
+				    id: 'search',
 					text: _('Search'),
 					iconCls: 'icon-add',
-					handler: this.onPreferencesClick,
-				        scope: this
+					handler: this.onSearchClick,
+				    scope: this
 				},'->',{
 					id: 'help',
 					iconCls: 'icon-help',
@@ -168,6 +168,10 @@ Deluge.Toolbar = Ext.extend(Ext.Toolbar, {
 	onPreferencesClick: function() {
 		deluge.preferences.show();
 	},
+
+    onSearchClick: function() {
+        deluge.searchWindow.show();
+    },
 
 	onTorrentAction: function(item) {
 		var selection = deluge.torrents.getSelections();
