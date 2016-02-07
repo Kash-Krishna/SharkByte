@@ -1,2 +1,0 @@
-sqlite3 youtor.db
-sqlite> .read create_youtor.sql
