@@ -1,5 +1,4 @@
 
-
 Ext.namespace('Deluge.add');
 
 Deluge.add.SearchWindow = Ext.extend(Deluge.add.Window, {
@@ -56,11 +55,13 @@ Deluge.add.SearchWindow = Ext.extend(Deluge.add.Window, {
 			autoExpandColumn: 'torrent',
 			height: '100%',
 			autoScroll: true
-		});
+		});          
 
+        this.grid = new Deluge.SearchGrid();
+        
 		this.add({
 			region: 'center',
-			items: [this.list],
+			items: [this.grid],
 			margins: '5 5 5 5',
 			bbar: new Ext.Toolbar({
 				items: [{
@@ -87,7 +88,7 @@ Deluge.add.SearchWindow = Ext.extend(Deluge.add.Window, {
 			})
 		});
 
-		this.optionsPanel = this.add(new Deluge.add.OptionsPanel());
+		//this.optionsPanel = this.add(new Deluge.add.OptionsPanel());
 		this.on('hide', this.onHide, this);
 		this.on('show', this.onShow, this);
 	},
