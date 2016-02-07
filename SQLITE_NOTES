@@ -1,0 +1,26 @@
+SQLite Notes
+
+Back up database:
+sqlite3 youtor.db .dump > backup_youtor.bak
+
+=============================================
+Import database from a file:
+sqlite3 youtor.db < create_youtor.sql
+
+Access sqlite3 datase you made:
+sqlite3 youtor.db
+
+Verify contents:
+.databases
+.tables
+select * from table_name;
+
+Show table schema:
+.schema ?TABLE?        Show the CREATE statements
+                         If TABLE specified, only show tables matching
+                         LIKE pattern TABLE.
+.fullschema            Show schema and the content of sqlite_stat tables
+
+==============================================
+
+
