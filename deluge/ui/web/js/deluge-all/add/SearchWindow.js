@@ -6,8 +6,8 @@ Deluge.add.SearchWindow = Ext.extend(Deluge.add.Window, {
 
 	title: _('Search for Torrents'),
 	layout: 'border',
-	width: 470,
-	height: 450,
+	width: 780,
+	height: 550,
 	bodyStyle: 'padding: 10px 5px;',
 	buttonAlign: 'right',
 	closeAction: 'hide',
