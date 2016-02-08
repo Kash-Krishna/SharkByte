@@ -7,15 +7,13 @@
   <body bgcolor="blue">
     <script>
 
-//SELECT $columns FROM $table WHERE $whereclause
-
-
-var columns_array = ["magnet_link", "torrent_name", "seeders"];
+var columns_array = ["torrent_name", "file_size", "seeders", "leechers", "uploader", "upload_date_time", "magnet_link"];
 var table_name = "local_youtor";
-var whereclause = ""
-var order_by = "seeders";
+var where_column = "";
+var where_text = "";
+var order_by = "torrent_name";
 var order_by_direction = "DESC";  //ASC or DESC
-function sql_statement_maker(columns_array, table_name, whereclause, order_by, order_by_direction) {
+function sql_statement_maker(columns_array, table_name, where_column, where_text, order_by, order_by_direction) {
     var col = " ";
     for (var i = 0; i < columns_array.length; i++) {
       col = col + columns_array[i];
