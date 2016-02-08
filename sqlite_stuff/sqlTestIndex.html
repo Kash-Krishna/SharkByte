@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SQL Test Bed</title>
+    <script src="sql.js"></script>
+  </head>
+  <body bgcolor="blue">
+    <script>
+
+//SELECT $columns FROM $table WHERE $whereclause
+
+
+var columns_array = ["magnet_link", "torrent_name", "seeders"];
+var table_name = "local_youtor";
+var whereclause = ""
+var order_by = "seeders";
+var order_by_direction = "DESC";  //ASC or DESC
+function sql_statement_maker(columns_array, table_name, whereclause, order_by, order_by_direction) {
+    var col = " ";
+    for (var i = 0; i < columns_array.length; i++) {
+      col = col + columns_array[i];
+      if (i < columns_array.length-1) col += ", ";
+    }
+
+    return "SELECT " + col + " FROM " + table_name + /*" WHERE " + whereclause + */ " ORDER BY " + order_by + " " + order_by_direction + ";";
+}
+var sql_query = sql_statement_maker(columns_array, table_name, whereclause, order_by, order_by_direction);
+alert(sql_query);
+
+
+      var request = new XMLHttpRequest();
+      request.open('GET', './youtor.db', true);
+      request.responseType = 'arraybuffer';
+      alert("step1");
+      request.onload = function (e) {
+        if(true/*request.status >= 200 && request.status < 400*/){
+          alert("got the data");
+          var uInt8Array = new Uint8Array(this.response);
+          var db = new SQL.Database(uInt8Array);
+               var stmt = db.prepare(sql_query);
+               while(stmt.step()){
+               var row = stmt.getAsObject();
+               document.write(JSON.stringify(row));
+               console.log(row);
+               }
+
+               //document.write(JSON.stringify(row));
+
+          //data = JSON.parse(request.responseText);
+          //console.log("This is +" +  contents.values[2]); 
+        }
+        else{
+          alert("reached server but did not get file");
+        }
+                                                     
+      };
+                                                     
+      request.onerror = function (){
+        alert("connection error");
+
+      };
+                                                     
+      request.send();
+      //alert(data.Persons.name);                                               
+      alert("Program Done");                                               
+    </script>
+  </body>
+</html>
