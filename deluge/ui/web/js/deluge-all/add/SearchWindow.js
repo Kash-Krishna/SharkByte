@@ -5,8 +5,8 @@ Deluge.add.SearchWindow = Ext.extend(Deluge.add.Window, {
 
 	title: _('Search for Torrents'),
 	layout: 'border',
-	width: 780,
-	height: 550,
+	width: 890,
+	height: 650,
 	bodyStyle: 'padding: 10px 5px;',
 	buttonAlign: 'right',
 	closeAction: 'hide',
@@ -55,11 +55,37 @@ Deluge.add.SearchWindow = Ext.extend(Deluge.add.Window, {
 			autoExpandColumn: 'torrent',
 			height: '100%',
 			autoScroll: true
-		});          
+		});
 
         this.grid = new Deluge.SearchGrid();
-        
-		this.add({
+/*        
+        this.grid = new Ext.grid.GridPanel({
+            store: new Ext.data.SimpleStore({
+                fields: [
+                    {name: 'Name', type: 'string'},
+                    {name: 'size', type: 'string'}
+                ],
+                data: [
+                    {Name: "PoI", size: "3.2"},
+                    {Name: "Thor", size: "1.3"}
+                ]
+            }),
+            columns: [{
+                {
+                    text: 'Name',
+                    dataIndex: 'Name',
+                    flex: 1
+                },{
+                    text: 'Size',
+                    dataIndex: 'size'
+                }
+            }],
+            height: 300,
+            width: 600
+            //renderTo: Ext.getBody()
+        });
+*/
+        this.add({
 			region: 'center',
 			items: [this.grid],
 			margins: '5 5 5 5',
@@ -88,7 +114,7 @@ Deluge.add.SearchWindow = Ext.extend(Deluge.add.Window, {
 			})
 		});
 
-		//this.optionsPanel = this.add(new Deluge.add.OptionsPanel());
+		this.optionsPanel = this.add(new Deluge.add.OptionsPanel());
 		this.on('hide', this.onHide, this);
 		this.on('show', this.onShow, this);
 	},

@@ -1,0 +1,13 @@
+
+
+Deluge.SearchStore = Ext.extend(Ext.data.Store, {
+    storeId: 'search-data',
+    fields: [
+        {name: 'name', type: 'string'},
+        {name: 'size', type: 'number'},
+        {name: 'date', type: 'date'},
+        {name: 'uploader', type: 'string'},
+        {name: 'seeds', type: 'number'},
+        {name: 'leechers', type: 'number'},
+    ],
+});
