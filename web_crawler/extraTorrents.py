@@ -1,7 +1,9 @@
 from bs4 import BeautifulSoup
 import urllib2
+from urllib2 import HTTPError, URLError
 import sys
 import sqlite3
+import time
 
 if __name__ == "__main__":
     
@@ -56,7 +58,16 @@ if __name__ == "__main__":
     for t in torrents:
         #print "searching in " + url + t
         req_t = urllib2.Request(url+t, headers= hdr) #extratorrent.cc/torrent/blah
-        http_tr = urllib2.urlopen(req_t)
+        while True:
+            try:
+                http_tr = urllib2.urlopen(req_t)
+                time.sleep(1)
+                break
+            except HTTPError, error_num:
+                #output error message
+                print "Error! " + str(error_num) 
+            #finally:#will execute when execption is raised
+                #skip current t in torrent
         r_t = http_tr.read()
         turtle_soup = BeautifulSoup(r_t)
         http_tr.close()
@@ -79,10 +90,12 @@ if __name__ == "__main__":
         date_and_time =''.join(turtle_soup.find(text='Torrent added:').next.findAll(text=True))
         date_and_time = date_and_time.replace(u'\xa0', u' ')
 
-        date = date_and_time[:10]
-        time = date_and_time[11:20]
+        upload_date = date_and_time[:10]
+        upload_time = date_and_time[11:20]
         
+        date_and_time = upload_date + " " + upload_time
         magnet_link = ""
+
         for lk in turtle_soup.findAll('a',href=True,title=True):
             if lk['title'] == "Magnet link":
                 magnet_link = lk['href']
@@ -97,5 +110,5 @@ if __name__ == "__main__":
             c.execute("INSERT OR IGNORE INTO local_youtor VALUES (?,?,?,?,?,?,?)", row);
             print "Digging up sweet loot!\n #" + str(torrent_count) + "! Loot: " + torrent_name
     #end for loop
-    print "Total of " + str(torrent_count) + "Torrents found!"
+    print "Total of " + str(torrent_count) + " Torrents found!"
     conn.close
