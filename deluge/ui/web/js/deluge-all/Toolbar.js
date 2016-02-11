@@ -42,7 +42,7 @@ Deluge.Toolbar = Ext.extend(Ext.Toolbar, {
 				{
 					id: 'tbar-deluge-text',
 					disabled: true,
-					text: _('Youtor'),
+					text: _('SharkByte'),
 					iconCls: 'x-deluge-main-panel'
 				}, new Ext.Toolbar.Separator(),
 				{
