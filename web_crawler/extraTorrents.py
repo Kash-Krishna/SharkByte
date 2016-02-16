@@ -11,7 +11,7 @@ if __name__ == "__main__":
     sys.setdefaultencoding('utf-8')
 
     #x = 'https://reddit.com' # tested with reddit it works!! 
-    url = 'http://extratorrent.cc'
+    url = 'https://extratorrent.cc'
     #magical header found on stack overflow that resolved 403
     hdr = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -61,17 +61,23 @@ if __name__ == "__main__":
         while True:
             try:
                 http_tr = urllib2.urlopen(req_t)
+                print "URL open success! at: " + url + t
                 time.sleep(1)
                 break
             except HTTPError, error_num:
                 #output error message
-                print "Error! " + str(error_num) 
+                print "Error! " + str(error_num) + "\n\tAt: " + url + t  
             #finally:#will execute when execption is raised
                 #skip current t in torrent
         r_t = http_tr.read()
         turtle_soup = BeautifulSoup(r_t)
         http_tr.close()
         
+        #skip the first 20 torrents, they're from the sidebar
+        if i < 20:
+            i+=1
+            continue
+
         torrent_name = ''.join(turtle_soup.find(text='Download torrent:').next.findAll(text=True))
         torrent_name = torrent_name.replace(u'\xa0', u' ')
         
@@ -95,20 +101,18 @@ if __name__ == "__main__":
         
         date_and_time = upload_date + " " + upload_time
         magnet_link = ""
-
+        
+        #look for the right link; magnet links have "Magnet link" in title tag.
         for lk in turtle_soup.findAll('a',href=True,title=True):
             if lk['title'] == "Magnet link":
                 magnet_link = lk['href']
-        i+=1
-        if query and i >= 20:
-            print "there\'s something in the query string!"
-            continue
-        else:
-            row = (torrent_name, total_size, seeder, leecher, uploader, date_and_time, magnet_link);
-            treasures.append(row)
-            torrent_count+=1
-            c.execute("INSERT OR IGNORE INTO local_youtor VALUES (?,?,?,?,?,?,?)", row);
-            print "Digging up sweet loot!\n #" + str(torrent_count) + "! Loot: " + torrent_name
+        
+        #Create tuple with torrent info
+        row = (torrent_name, total_size, seeder, leecher, uploader, date_and_time, magnet_link);
+        treasures.append(row)
+        torrent_count+=1
+        c.execute("INSERT OR IGNORE INTO local_youtor VALUES (?,?,?,?,?,?,?)", row);
+        print "Digging up sweet loot!\n #" + str(torrent_count) + "! Loot: " + torrent_name
     #end for loop
     print "Total of " + str(torrent_count) + " Torrents found!"
     conn.close
