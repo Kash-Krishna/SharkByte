@@ -50,8 +50,8 @@ if __name__ == "__main__":
     #make Connection with database
     conn  = sqlite3.connect('youtor.db', isolation_level=None)
     c = conn.cursor()
-    thresh_hold = 10
-    i = 0
+    #thresh_hold = 10 #used for testing
+    i = 0 #use to ignore firt 20 links(ads) in extratorrent
     torrent_count = 0
     
     #extract data from each torrent sub_page 
@@ -73,7 +73,7 @@ if __name__ == "__main__":
         turtle_soup = BeautifulSoup(r_t)
         http_tr.close()
         
-        #skip the first 20 torrents, they're from the sidebar
+        #skip the first 20 torrents, they're from the sidebar ads
         if i < 20:
             i+=1
             continue
@@ -111,6 +111,8 @@ if __name__ == "__main__":
         row = (torrent_name, total_size, seeder, leecher, uploader, date_and_time, magnet_link);
         treasures.append(row)
         torrent_count+=1
+        print row
+        time.sleep(1)
         c.execute("INSERT OR IGNORE INTO local_youtor VALUES (?,?,?,?,?,?,?)", row);
         print "Digging up sweet loot!\n #" + str(torrent_count) + "! Loot: " + torrent_name
     #end for loop
