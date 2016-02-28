@@ -11,10 +11,12 @@ def clearScreen():
 
 if __name__ == "__main__":
     argc = len(sys.argv)
-    #print str(sys.argv)
     
     if argc <= 1:
         print "NOT ENOUGH ARGUMENTS"
         sys.exit()
-    
-    
+
+    source = sys.argv[1]
+    query = sys.argv[2]
+    #if source is "kat.cr" or source is "kat":
+        
