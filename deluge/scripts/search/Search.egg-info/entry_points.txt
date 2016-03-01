@@ -1,0 +1,8 @@
+
+    [deluge.plugin.core]
+    Search = search:CorePlugin
+    [deluge.plugin.gtkui]
+    Search = search:GtkUIPlugin
+    [deluge.plugin.web]
+    Search = search:WebUIPlugin
+    

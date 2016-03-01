@@ -1,0 +1,13 @@
+setup.py
+Search.egg-info/PKG-INFO
+Search.egg-info/SOURCES.txt
+Search.egg-info/dependency_links.txt
+Search.egg-info/entry_points.txt
+Search.egg-info/top_level.txt
+search/__init__.py
+search/common.py
+search/core.py
+search/gtkui.py
+search/webui.py
+search/data/config.glade
+search/data/search.js
