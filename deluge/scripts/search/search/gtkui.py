@@ -51,11 +51,16 @@ from common import get_resource
 
 class SearchWindow(gtk.Dialog):
     """SearchWindow to search for torrents"""
+
+    SELECTED = 4
+    URL = 5
+    
     def __init__(self):
         super(SearchWindow, self).__init__(title="Search",
             parent = component.get("MainWindow").window,
             flags = (gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT | gtk.DIALOG_NO_SEPARATOR),
-            buttons = ("Cancel", gtk.RESPONSE_NO, "Search", gtk.RESPONSE_YES)
+            buttons = ("Cancel", gtk.RESPONSE_NO, "Search", gtk.RESPONSE_YES,
+                "Add to Q", gtk.RESPONSE_YES)
         )
 
         self.connect("delete-event", self._on_delete_event)
@@ -84,6 +89,8 @@ class SearchWindow(gtk.Dialog):
         self.query.set_activates_default(True)
         self.query.grab_focus()
 
+        self.results_store = self.builder.get_object("results_store")
+   
     @property
     def query_value(self):
         return self.query.get_text()
@@ -123,7 +130,19 @@ class SearchWindow(gtk.Dialog):
         """Return string entered by user"""
         return self.query.get_text()
 
+    def get_torrent_list(self, results):
+        """gets torrent data and puts into the list to display"""
+        self.results_store.clear()
+        for result in results:
+            """title | seeds | leechers | size | url | date"""
+            
+            row = [result["title"], result["seeds"], result["leechers"], result["size"],
+                result["url"], result["date"]]
+            
+            self.results_store.append(row)
+
     
+            
     
 
 class GtkUI(GtkPluginBase):
@@ -160,8 +179,11 @@ class GtkUI(GtkPluginBase):
         "callback for on show_prefs"
         self.glade.get_widget("txt_test").set_text(config["test"])
 
+    
+        
     def search(self, widget):
         """UI to search for torrents to download"""
         searchWindow = SearchWindow()
         searchWindow.run()
-        
+        test_list = list([dict([("title", "PoI"), ("size", "4"), ("seeds", 400), ("leechers", 299), ("url", "PoI.com"), ("date", "4/15/2016")])])
+        searchWindow.get_torrent_list(test_list)
