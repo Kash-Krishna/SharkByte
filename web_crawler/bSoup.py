@@ -1,3 +1,4 @@
+#sample code from bsoup documentation
 from bs4 import BeautifulSoup
 
 soup = BeautifulSoup(open("index.html"))

@@ -43,9 +43,9 @@ def search_kat(query, hdr):
         if ('.html' in l):
             torrents.append(l)
     #make Connection with database
-    conn  = sqlite3.connect('youtor.db', isolation_level=None)
-    conn.text_factory = str
-    c = conn.cursor()
+    db_conn  = sqlite3.connect('youtor.db', isolation_level=None)
+    db_conn.text_factory = str
+    cursor = db_conn.cursor()
     torrent_count = 0
 
     #extract data from eaach sub page of kat
@@ -111,7 +111,7 @@ def search_kat(query, hdr):
         row = (torrent_name, total_size, seeder, leecher, uploader, date_and_time, magnet_link);
         treasures.append(row)
         torrent_count+=1
-        c.execute("INSERT OR IGNORE INTO local_youtor VALUES (?,?,?,?,?,?,?)", row);
+        cursor.execute("INSERT OR IGNORE INTO local_youtor VALUES (?,?,?,?,?,?,?)", row);
     #end for loop
     conn.close
 

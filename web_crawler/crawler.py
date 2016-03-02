@@ -1,19 +1,9 @@
-import socket, sys, os, time
-#import cPickle as pickle #don't need them yet
-from shark import Shark #sharks are users
-sys.path.insert(0,'../web_crawler/')
+import sys, os, time
 from kat import search_kat
 from extraTorrents import search_extra_t
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
-
-HOST = 'localhost'
-PORT = ''
-
-def clearScreen():
-    os.system('clear')
-    return
 
 #magical header found on stack overflow 
 hdr = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11', 
@@ -35,17 +25,19 @@ if __name__ == "__main__":
     #client.py source query
     #query is optional, if query is empty, search source for latest
     source = sys.argv[1]
+    print "Source: " + source
+
     if argc <= 2:
+        print "No query provided, searching source for latest torrents"
         query = ""
     else:
         query = sys.argv[2]
-        
-    print "source: " + source
     print "query: " + query
     
-    if source == "kat.cr":
+    if source == "kat.cr" or source == "kat" or sourcec == "kickass":
         search_kat(query,hdr)
     elif source == "extratorrents":
         search_extra_t(query,hdr)
     else:
         print "INVALID SOURCE"
+
