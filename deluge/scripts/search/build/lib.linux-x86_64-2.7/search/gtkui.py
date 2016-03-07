@@ -45,7 +45,109 @@ from deluge.plugins.pluginbase import GtkPluginBase
 import deluge.component as component
 import deluge.common
 
+from twisted.internet import defer
+
 from common import get_resource
+
+from dbInterface import db_interface
+
+class SearchWindow(gtk.Dialog):
+    """SearchWindow to search for torrents"""
+
+    SELECTED = 4
+    URL = 5
+    
+    def __init__(self):
+        super(SearchWindow, self).__init__(title="Search",
+            parent = component.get("MainWindow").window,
+            flags = (gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT | gtk.DIALOG_NO_SEPARATOR),
+            buttons = ("Cancel", gtk.RESPONSE_NO, "Search", gtk.RESPONSE_YES,
+                "Add to Q", gtk.RESPONSE_YES)
+        )
+
+        self.connect("delete-event", self._on_delete_event)
+        self.connect("response", self._on_response)
+
+        ui_file = "searchWindow.ui"
+        self._load_ui(ui_file)
+
+        self.set_default_response(gtk.RESPONSE_YES)
+
+        self.age = 0
+
+        radio_buttons = {
+            "1d_radio": 1,
+            "7d_radio": 7,
+            "1m_radio": 30,
+            "1y_radio": 365,
+            "all_radio": 0,
+        }
+
+        for name, age in radio_buttons.iteritems():
+            button = self.builder.get_object(name)
+            button.connect("toggled", self._on_radio_toggled, age)
+
+        self.query = self.builder.get_object("query_entry")
+        self.query.set_activates_default(True)
+        self.query.grab_focus()
+
+        self.results_store = self.builder.get_object("results_store")
+   
+    @property
+    def query_value(self):
+        return self.query.get_text()
+
+    @property
+    def query_age(self):
+        return self.age
+
+    def _on_radio_toggled(self, widget, data=None):
+        if(widget.get_active()):
+            self.age = data
+
+    def _load_ui(self, ui_file):
+        """Load content using root object from ui file // test this later"""
+        self.builder = gtk.Builder()
+        self.builder.add_from_file(get_resource(ui_file))
+        self.root = self.builder.get_object("root")
+        self.get_content_area().pack_start(self.root)
+        self.builder.connect_signals(self)
+
+    def _on_delete_event(self, widget, event):
+        self.deferred.callback(gtk.RESPONSE_DELETE_EVENT)
+        self.destroy()
+
+    def _on_response(self, widget, response):
+        self.deferred.callback(response)
+        self.destroy()
+
+    def run(self):
+        """Shows the dialog and returns a deferred object // test later"""
+        self.deferred = defer.Deferred()
+        self.show()
+        return self.deferred
+    
+    @property
+    def query_string(self):
+        """Return string entered by user"""
+        return self.query.get_text()
+
+    def get_torrent_list(self, results):
+        """gets torrent data and puts into the list to display"""
+        self.results_store.clear()
+        for result in results:
+            """title | size | seeds | leeches | uploader | date"""
+
+            #row = [result["title"], result["seeds"], result["leechers"], result["size"],
+            #       result["url"], result["date"]]
+            row = [result[0], str(result[1]), str(result[2]), str(result[3]),
+                   str(result[4]), str(result[5])]
+            #row = ["Person of Interest", "4.5", "400", "156", "Nick", "2/3/16"]
+            self.results_store.append(row)
+
+    
+            
+    
 
 class GtkUI(GtkPluginBase):
     def enable(self):
@@ -55,10 +157,17 @@ class GtkUI(GtkPluginBase):
         component.get("PluginManager").register_hook("on_apply_prefs", self.on_apply_prefs)
         component.get("PluginManager").register_hook("on_show_prefs", self.on_show_prefs)
 
+        self.plugin_manager = component.get("PluginManager")
+        self.tbar_seperator = self.plugin_manager.add_toolbar_separator()
+        self.tbar_search = component.get("ToolBar").add_toolbutton(self.search,
+            label="Testing", stock=gtk.STOCK_FIND, tooltip="Use the crawler")
+
     def disable(self):
         component.get("Preferences").remove_page("Search")
         component.get("PluginManager").deregister_hook("on_apply_prefs", self.on_apply_prefs)
         component.get("PluginManager").deregister_hook("on_show_prefs", self.on_show_prefs)
+        self.plugin_manager.remove_toolbar_button(self.tbar_search)
+        self.plugin_manager.remove_toolbar_button(self.tbar_seperator)
 
     def on_apply_prefs(self):
         log.debug("applying prefs for Search")
@@ -72,4 +181,15 @@ class GtkUI(GtkPluginBase):
 
     def cb_get_config(self, config):
         "callback for on show_prefs"
-        self.glade.get_widget("txt_test").set_text(config["test"])
+        self.glade.get_widget("txt_test").set_text(config["test"])    
+        
+    def search(self, widget):
+        """UI to search for torrents to download"""
+        searchWindow = SearchWindow()
+        searchWindow.run()
+        test_list = list([dict([("title", "PoI"), ("size", "4"), ("seeds", 400),
+                ("leechers", 299), ("url", "PoI.com"), ("date", "4/15/2016")])])
+
+        db_api = db_interface()
+        
+        searchWindow.get_torrent_list(db_api.get_all_columns())

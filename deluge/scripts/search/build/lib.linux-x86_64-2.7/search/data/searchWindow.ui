@@ -107,22 +107,19 @@
     <child>
       <object class="GtkListStore" id="results_store">
         <columns>
-          <!-- column-names -->
-          <!-- Torrent Name -->
+          <!-- column-name Torrent -->
           <column type="gchararray"/>
-          <!-- Size -->
+          <!-- column-name Seeds -->
           <column type="gchararray"/>
-          <!-- Uploader -->
+          <!-- column-name Peers/Leechers -->
           <column type="gchararray"/>
-          <!-- Upload Date/Time -->
+          <!-- column-name Size -->
           <column type="gchararray"/>
-          <!-- Seeds -->
+          <!-- column-name Download
+               <column type="gboolean"/> -->
+          <!-- column-name Url -->
           <column type="gchararray"/>
-          <!-- Leeches -->
-          <column type="gchararray"/>
-          <!-- Add to Q -->
-          <column type="gboolean"/>
-          <!-- Magnet Link -->
+          <!-- column-name Upload date -->
           <column type="gchararray"/>
         </columns>
       </object>
@@ -143,7 +140,7 @@
             <child>
               <object class="GtkTreeViewColumn" id="name">
                 <property name="resizable">True</property>
-                <property name="title">Name</property>
+                <property name="title">Torrent Name</property>
                 <property name="expand">True</property>
                 <child>
                   <object class="GtkCellRendererText" id="torrent_name"/>
@@ -162,21 +159,7 @@
                     <property name="xalign">1</property>
                   </object>
                   <attributes>
-                    <attribute name="text">1</attribute>
-                  </attributes>
-                </child>
-              </object>
-            </child>
-
-            <child>
-              <object class="GtkTreeViewColumn" id="uploader">
-                <property name="title" translatable="yes">Uploader</property>
-                <child>
-                  <object class="GtkCellRendererText" id="uloader">
-                    <property name="xalign">1</property>
-                  </object>
-                  <attributes>
-                    <attribute name="markup">2</attribute>
+                    <attribute name="text">3</attribute>
                   </attributes>
                 </child>
               </object>
@@ -188,7 +171,7 @@
                 <child>
                   <object class="GtkCellRendererText" id="uploaded_date"/>
                   <attributes>
-                    <attribute name="text">3</attribute>
+                    <attribute name="text">5</attribute>
                   </attributes>
                 </child>
               </object>
@@ -202,7 +185,7 @@
                     <property name="xalign">1</property>
                   </object>
                   <attributes>
-                    <attribute name="text">4</attribute>
+                    <attribute name="text">1</attribute>
                   </attributes>
                 </child>
               </object>
@@ -210,32 +193,46 @@
 
             <child>
               <object class="GtkTreeViewColumn" id="peers">
-                <property name="title">Leeches</property>
+                <property name="title">Peers</property>
                 <child>
                   <object class="GtkCellRendererText" id="peers_text">
                     <property name="xalign">1</property>
                   </object>
                   <attributes>
-                    <attribute name="text">5</attribute>
+                    <attribute name="text">2</attribute>
                   </attributes>
                 </child>
               </object>
             </child>
-
-            <child>
-              <object class="GtkTreeViewColumn" id="download">
-                <property name="title">Add to Queue</property>
+            <!--
                 <child>
-                  <object class="GtkCellRendererToggle" id="selected">
-                    <signal name="toggled" handler="on_toggled" swapped="no"/>
-                  </object>
-                  <attributes>
-                    <attribute name="active">6</attribute>
-                  </attributes>
+                <object class="GtkTreeViewColumn" id="torrent_votes">
+                <property name="title" translatable="yes">Rate</property>
+                <child>
+                <object class="GtkCellRendererText" id="votes">
+                <property name="xalign">1</property>
+                </object>
+                <attributes>
+                <attribute name="markup">7</attribute>
+                </attributes>
                 </child>
-              </object>
-            </child>
-
+                </object>
+                </child>
+           
+                <child>
+                <object class="GtkTreeViewColumn" id="download">
+                <property name="title">Add to Q</property>
+                <child>
+                <object class="GtkCellRendererToggle" id="selected">
+                <signal name="toggled" handler="on_torrent_toggled" swapped="no"/>
+                </object>
+                <attributes>
+                <attribute name="active">4</attribute>
+                </attributes>
+                </child>
+                </object>
+                </child>
+          -->
         </object>
           <packing>
             <property name="expand">True</property>

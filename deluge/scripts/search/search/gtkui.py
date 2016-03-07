@@ -49,11 +49,13 @@ from twisted.internet import defer
 
 from common import get_resource
 
+from dbInterface import db_interface
+
 class SearchWindow(gtk.Dialog):
     """SearchWindow to search for torrents"""
 
-    SELECTED = 4
-    URL = 5
+    SELECTED = 6
+    MAG_LINK = 7
     
     def __init__(self):
         super(SearchWindow, self).__init__(title="Search",
@@ -134,15 +136,22 @@ class SearchWindow(gtk.Dialog):
         """gets torrent data and puts into the list to display"""
         self.results_store.clear()
         for result in results:
-            """title | seeds | leechers | size | url | date"""
-            
-            row = [result["title"], result["seeds"], result["leechers"], result["size"],
-                result["url"], result["date"]]
-            
+            """title | size | uploader | date | seeds | leeches | Add2Q | mag_link"""
+            row = [result[0], result[1], result[4], result[5], str(result[2]),
+                   str(result[3]), False, result[6]]
             self.results_store.append(row)
 
-    
-            
+    def on_toggled(self, renderer, path):
+        current_val = renderer.get_active()
+        tree_iter = self.results_store.get_iter_from_string(path)
+        self.results_store.set(tree_iter, self.SELECTED, not current_val)
+
+    @property
+    def selected(self):
+        selected = [
+            t[self.MAG_LINK] for t in self.results_store if t[self.SELECTED]
+        ]
+        return selected
     
 
 class GtkUI(GtkPluginBase):
@@ -177,13 +186,13 @@ class GtkUI(GtkPluginBase):
 
     def cb_get_config(self, config):
         "callback for on show_prefs"
-        self.glade.get_widget("txt_test").set_text(config["test"])
-
-    
+        self.glade.get_widget("txt_test").set_text(config["test"])    
         
     def search(self, widget):
         """UI to search for torrents to download"""
         searchWindow = SearchWindow()
         searchWindow.run()
-        test_list = list([dict([("title", "PoI"), ("size", "4"), ("seeds", 400), ("leechers", 299), ("url", "PoI.com"), ("date", "4/15/2016")])])
-        searchWindow.get_torrent_list(test_list)
+        
+        db_api = db_interface()
+        
+        searchWindow.get_torrent_list(db_api.get_all_columns())

@@ -1,0 +1,8 @@
+
+    [deluge.plugin.core]
+    SearchDB = searchdb:CorePlugin
+    [deluge.plugin.gtkui]
+    SearchDB = searchdb:GtkUIPlugin
+    [deluge.plugin.web]
+    SearchDB = searchdb:WebUIPlugin
+    

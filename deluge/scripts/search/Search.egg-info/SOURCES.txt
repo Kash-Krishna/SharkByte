@@ -7,7 +7,9 @@ Search.egg-info/top_level.txt
 search/__init__.py
 search/common.py
 search/core.py
+search/dbInterface.py
 search/gtkui.py
 search/webui.py
 search/data/config.glade
 search/data/search.js
+search/data/searchWindow.ui
