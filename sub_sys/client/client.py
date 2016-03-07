@@ -4,7 +4,7 @@ from thread import *
 
 HOST = 'localhost'
 PORT = 5000
-BUFFER_SIZE = 1024
+BUFFER_SIZE = 2048
 
 def send_to_server():
     skip
@@ -28,8 +28,11 @@ def menu():
         else:
             print "Invalid option!"
 
-def update_loots(sock):
-    
+def update_loots(sock,uid):
+    command = "GET_TORRENTS:" + uid
+    sock.send(command)
+    rdata = pickle.loads(sock.recv(BUFFER_SIZE))
+    skip
 
 if __name__ == "__main__":
     """
@@ -49,15 +52,27 @@ if __name__ == "__main__":
     #read from uid.txt
     uid_text = open("uid.txt")
     uid = uid_text.read()
-    #read from subl_list.txt for list of subs
-    subl_text = open("sub_list.txt")
-    sub_list = subl_text.read()
-    #read from group_tags.txt for listof groups 
-    gtags_text = open("group_tags.txt")
-    group_tags = gtags_text.read()
+    #validate uid
     
+    #read from subl_list.txt for list of subs
+    sub_list = []
+    with open("sub_list.txt") as f_sub:
+        temp_sub = f_sub.readlines()
+    #get rid of '\n'
+    for s in temp_sub:
+        sub_list.append(s.strip())
+    
+    #read from group_tags.txt for listof groups 
+    group_tags = []
+    with open("group_tags.txt") as f_tag:
+        temp_tags = f_tag.readlines()
+    #get rid of '\n'
+    for t in temp_tags:
+        group_tags.append(t.strip())
+
     #create client side tables in db, use IF NOT EXISTS
-    #wait...
+    messages_db = sqlite3.connect('messages.db')
+    message_cursor = messages_db.cursor()
     while True:
         option = menu()
         

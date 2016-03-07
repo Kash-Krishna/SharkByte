@@ -18,7 +18,7 @@ def search_kat(query, hdr):
         query = query.replace(" ", "%20")
         search_url = url + "/usearch/" + query
     else:
-        search_url = url + "/new/?field=seeders&sorder=desc"
+        search_url = url + "/linux/?field=seeders&sorder=desc"
    
     req = urllib2.Request(search_url, headers=hdr)
     http_r = urllib2.urlopen(req)
