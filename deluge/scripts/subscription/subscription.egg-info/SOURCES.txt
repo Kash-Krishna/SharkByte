@@ -1,0 +1,15 @@
+setup.py
+subscription/__init__.py
+subscription/common.py
+subscription/core.py
+subscription/gtkui.py
+subscription/webui.py
+subscription.egg-info/PKG-INFO
+subscription.egg-info/SOURCES.txt
+subscription.egg-info/dependency_links.txt
+subscription.egg-info/entry_points.txt
+subscription.egg-info/top_level.txt
+subscription/data/config.glade
+subscription/data/sub.txt
+subscription/data/subscription.js
+subscription/data/subscription.ui

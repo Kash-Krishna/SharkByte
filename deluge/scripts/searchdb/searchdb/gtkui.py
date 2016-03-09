@@ -180,7 +180,7 @@ class GtkUI(GtkPluginBase):
         self.plugin_manager = component.get("PluginManager")
         self.tb_separator = self.plugin_manager.add_toolbar_separator()
         self.tb_search = self.plugin_manager.add_toolbar_button(self.search,
-            label="Test", stock=gtk.STOCK_FIND, tooltip="Search IsoHunt")
+            label="Searching...", stock=gtk.STOCK_FIND, tooltip="Searching local database")
 
     def disable(self):
         self.plugin_manager.remove_toolbar_button(self.tb_search)
@@ -188,7 +188,7 @@ class GtkUI(GtkPluginBase):
 
     @defer.inlineCallbacks
     def search(self, widget):
-        """Search and add torrents to download queue."""
+        """Search for and add torrents to download queue."""
         search_dialog = SearchDialog()
         response = yield search_dialog.run()
 

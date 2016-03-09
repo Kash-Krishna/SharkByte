@@ -1,0 +1,8 @@
+
+    [deluge.plugin.core]
+    subscription = subscription:CorePlugin
+    [deluge.plugin.gtkui]
+    subscription = subscription:GtkUIPlugin
+    [deluge.plugin.web]
+    subscription = subscription:WebUIPlugin
+    
