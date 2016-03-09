@@ -43,9 +43,11 @@ def menu():
     INSERT all msg into msg.db
 """
 def retrieve_messages(sock, uid, tags):
-    
     command = ("RETRIEVE", uid, tags)
-    send
+    jar = pickle.dumps(command)
+    sock.send(jar)
+    data = pickle.loads(sock.recv(BUFFER_SIZE))
+    
 #end retrieve_messages
 
 """ Send 'Get_Torrents' as command to server
@@ -120,6 +122,7 @@ if __name__ == "__main__":
     #get subscription list from text file
     #get group tags from text file
     sub_list = get_sub_list()
+    sys.exit()
     group_tags = get_group_tags()
     
     #create client side tables in db, use IF NOT EXISTS

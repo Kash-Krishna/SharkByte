@@ -92,23 +92,18 @@ def write_message(sock, args):
 """ Main client thread
     recv data from client with recv_from_client and parase command
     execute functs according to commands
-    List of Commands:
-      #GET_TORRENTS
-      WRITE_MESSAGE
-      #EDIT_SUB
-      #EDIT_GROUP
+    WRITE_MESSAGE
+    LOG_OFF
 """
 def client_thread(c_sock):
     #check for current client's uid
+    send_offline_msg(c_sock)
     while True:
         data = recv_from_client(c_sock)
         command = data[0]
         data = data[1:]
         
         send_data = None #initalize and reset after each iteration of loop
-        #GET_TORRENT:QUERY_TYPE:QUERY
-        #no longer doing server side torrent db
-        #if command == "GET_TORRENT":
         #WRITE_MESSAGE:AUTHOR_UID:MSG:UID/TAG:DEST_UID/TAG
         if command == "WRITE_MESSAGE":
             #return success or fail
