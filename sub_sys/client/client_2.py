@@ -1,5 +1,5 @@
 import socket, sys, os, time, sqlite3, subprocess
-from shark import Shark #sharks are users
+from shark import Shark #sharks are users 
 #move crawler dir(?)
 #add path
 #change crawler db path
@@ -7,7 +7,6 @@ from shark import Shark #sharks are users
 HOST = 'localhost'
 PORT = 5000
 BUFFER_SIZE = 2048
-
 
 """ Send command to server through socket
     returns recv'd data parsed into a list
@@ -24,7 +23,7 @@ def send_to_server(command, sock):
     U: update the torrent //query server db
     E: Edit Subscription //add or drop
     T: Follow or unfollow a group tag
-    S: Send a message // to uid or 
+    S: Send a message // to uid or
 """
 def menu():
     while 1:
@@ -43,7 +42,7 @@ def menu():
     INSERT all msg into msg.db
 """
 def retrieve_messages(sock, uid, tags):
-    
+
     command = ("RETRIEVE", uid, tags)
     send
 #end retrieve_messages
@@ -56,7 +55,7 @@ def update_loots(sock, sub_list, torrent_db):
     for sub in sub_list:
         proc = Popen("python ./webcrawler/crawler kat " + sub)
         proc.wait()
-            
+
     return
 
 """ Send 'Write_Message' as command to server
@@ -86,11 +85,11 @@ def get_sub_list():
     #get rid of '\n'
     for s in temp_sub:
         sub_list.append(s.strip())
-    
-    return sub_list
+
+   return sub_list
 
 def get_group_tags():
-    #read from group_tags.txt for listof groups 
+    #read from group_tags.txt for listof groups
     group_tags = []
     with open("group_tags.txt") as f_tag:
         temp_tags = f_tag.readlines()
@@ -103,62 +102,27 @@ if __name__ == "__main__":
     #socket setup
     server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_sock.settimeout(10)
-    
+
     #create connection to server
     try:
         server_sock.connect((HOST,PORT))
     except:
         print "Failure to connect to HOST at PORT " + str(PORT)
         #sys.exit()
-    
+
     #SETUP
+
     print "Initilizing..."
     #read from uid.txt
     uid_text = open("uid.txt")
     uid = uid_text.read()
     #validate uid (?)
+
     #get subscription list from text file
-    #get group tags from text file
+    #get group tags from text file 
     sub_list = get_sub_list()
     group_tags = get_group_tags()
-    
+
     #create client side tables in db, use IF NOT EXISTS
-    #set up messages db
-    messages_db = sqlite3.connect('messages.db',isolation_level=None)
-    messages_cursor = messages_db.cursor()
-    #look into SEQUENCES
-    messages_cursor.execute('''CREATE TABLE IF NOT EXISTS messages 
-            (msg_id INT PRIMARY KEY,
-             time_sent TEXT NOT NULL,
-             msg TEXT, 
-             sender_uid TEXT NOT NULL, 
-             tag TEXT);''')
-    
-    #set up torrents db. 
-    torrents_db = sqlite3.connect('torrents.db',isolation_level=None)
-    torrents_cursor = torrents_db.cursor()
-    torrents_cursor.execute('''CREATE TABLE IF NOT EXISTS torrents
-            (torrent_name TEXT,
-             file_size REAL,
-             seeders INT,
-             leechers INT,
-             uploader TEXT,
-             upload_date_and_time TEXT,
-             magnet_link TEXT PRIMARY KEY NOT NULL);''')
-    
-    #retrieve any Q'd Messages
-    retrieve_messages(server_sock,uid,group_tags)
-    
-    #start main loop
-    while True:
-        option = menu()
-        if option == "U": #update torrents, web crawler
-            update_loots(server_sock, trrent_cursor)
-        elif option == "S": #write a message to send
-            wriet_message(server_sock, message_cursor)
-        elif option == "Q": #quit client 
-            sys.exit()
-        #break for testing purposes, only checking one function at a time
-        break
-        
-    #exiting main
+    #set up messages db                         
+
