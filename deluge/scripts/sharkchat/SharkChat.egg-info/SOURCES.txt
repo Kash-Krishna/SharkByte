@@ -1,0 +1,14 @@
+setup.py
+SharkChat.egg-info/PKG-INFO
+SharkChat.egg-info/SOURCES.txt
+SharkChat.egg-info/dependency_links.txt
+SharkChat.egg-info/entry_points.txt
+SharkChat.egg-info/top_level.txt
+sharkchat/__init__.py
+sharkchat/common.py
+sharkchat/core.py
+sharkchat/gtkui.py
+sharkchat/webui.py
+sharkchat/data/SharkChat.ui
+sharkchat/data/config.glade
+sharkchat/data/sharkchat.js

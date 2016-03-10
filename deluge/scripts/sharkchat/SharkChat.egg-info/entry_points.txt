@@ -1,0 +1,8 @@
+
+    [deluge.plugin.core]
+    SharkChat = sharkchat:CorePlugin
+    [deluge.plugin.gtkui]
+    SharkChat = sharkchat:GtkUIPlugin
+    [deluge.plugin.web]
+    SharkChat = sharkchat:WebUIPlugin
+    
