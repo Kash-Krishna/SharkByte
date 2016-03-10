@@ -152,6 +152,17 @@ class SharkChat(BaseDialog):
         entry_list = [sendto, "0", message, now]
         self.messages_list.append(entry_list)
 
+    def OnRefreshMessages(self, widget):
+        """Called when the use wants to add a wine"""
+        # void gtk_entry_set_text (GtkEntry *entry, const gchar *text);
+        sendto = self.sendto_entry.get_text()
+        message = self.message_entry.get_text()
+        self.sendto_entry.set_text("");
+        #self.message_entry.set_text("");
+        now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        entry_list = [sendto, "0", message, now]
+        self.messages_list.append(entry_list)
+
 
 
 class ResultsDialog(BaseDialog):

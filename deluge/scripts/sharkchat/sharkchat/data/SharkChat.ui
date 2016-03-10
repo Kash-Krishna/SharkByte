@@ -92,7 +92,19 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <placeholder/>
+              <object class="GtkButton" id="refresh_button">
+                <property name="label" translatable="yes">Refresh Messages</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <signal name="clicked" handler="OnRefreshMessages" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
             </child>
             <child>
               <object class="GtkButton" id="send_button">
@@ -127,7 +139,6 @@
       <object class="GtkTreeView" id="treeview1">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="enable_grid_lines">both</property>
         <property name="enable_tree_lines">True</property>
       </object>
       <packing>
