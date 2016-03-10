@@ -3,7 +3,7 @@
   <!-- interface-requires gtk+ 2.10 -->
   <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="main_window">
-    <property name="title">Deluge</property>
+    <property name="title">SharkByte</property>
     <signal name="destroy" handler="quit"/>
     <signal name="destroy_event" handler="quit"/>
     <signal name="delete_event" handler="delete"/>

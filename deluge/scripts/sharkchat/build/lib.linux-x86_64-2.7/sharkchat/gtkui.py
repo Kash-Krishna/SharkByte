@@ -52,20 +52,6 @@ from common import get_resource
 import datetime
 import os, sys, threading, time
 
-class Worker(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
-        # A flag to notify the thread that it should finish up and exit
-        self.kill_received = False
-
-    def run(self):
-        while not self.kill_received:
-            self.update_messages()
-    
-    def update_messages(self):
-        print "hi"
-        # call again in n seconds
-        threading.Timer(1, self.update_messages).start()
 
 # Sweet, makes an easy window base class to work with :D
 class BaseDialog(gtk.Dialog):
@@ -166,6 +152,17 @@ class SharkChat(BaseDialog):
         entry_list = [sendto, "0", message, now]
         self.messages_list.append(entry_list)
 
+    def OnRefreshMessages(self, widget):
+        """Called when the use wants to add a wine"""
+        # void gtk_entry_set_text (GtkEntry *entry, const gchar *text);
+        sendto = self.sendto_entry.get_text()
+        message = self.message_entry.get_text()
+        self.sendto_entry.set_text("");
+        #self.message_entry.set_text("");
+        now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        entry_list = [sendto, "0", message, now]
+        self.messages_list.append(entry_list)
+
 
 
 class ResultsDialog(BaseDialog):
@@ -199,22 +196,6 @@ class GtkUI(GtkPluginBase):
         component.get("PluginManager").register_hook("on_show_prefs", self.on_show_prefs)
 
 
-        # create a thread to update the messages
-        threads = []
-        for i in range(1):
-            t = Worker()
-            threads.append(t)
-            t.start()
-
-        while len(threads) > 0:
-            try:
-                # Join all threads using a timeout so it doesn't block
-                # Filter out threads which have been joined or are None
-                threads = [t.join(1) for t in threads if t is not None and t.isAlive()]
-            except KeyboardInterrupt:
-                print "Ctrl-c received! Sending kill to threads..."
-                for t in threads:
-                    t.kill_received = True
 
 
     def disable(self):

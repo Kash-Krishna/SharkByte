@@ -279,7 +279,7 @@ class MainWindow(component.Component):
         component.get("SystemTray").blink(False)
 
     def stop(self):
-        self.window.set_title("Deluge")
+        self.window.set_title("SharkByte")
 
     def update(self):
         # Update the window title
@@ -294,7 +294,7 @@ class MainWindow(component.Component):
         if value:
             self.update()
         else:
-            self.window.set_title("Deluge")
+            self.window.set_title("SharkByte")
 
     def on_newversionavailable_event(self, new_version):
         if self.config["show_new_releases"]:
