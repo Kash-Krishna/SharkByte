@@ -116,7 +116,7 @@ class GtkUI(GtkPluginBase):
         self.plugin_manager = component.get("PluginManager")
         self.tbar_separator = self.plugin_manager.add_toolbar_separator()
         self.tbar_aforw = self.plugin_manager.add_toolbar_button(self.AutoForwardUI,
-            label="setup forwarding", stock=gtk.STOCK_ADD, tooltip="start the forwarding protocol")
+            label="setup forwarding", stock=gtk.STOCK_HARDDISK, tooltip="start the forwarding protocol")
         
     def disable(self):
         self.plugin_manager.remove_toolbar_button(self.tbar_aforw)

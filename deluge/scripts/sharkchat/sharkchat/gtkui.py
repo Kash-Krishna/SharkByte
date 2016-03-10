@@ -189,7 +189,7 @@ class GtkUI(GtkPluginBase):
         self.plugin_manager = component.get("PluginManager")
         self.tb_separator = self.plugin_manager.add_toolbar_separator()
         self.tb_search = self.plugin_manager.add_toolbar_button(self.start_sharkchat,
-            label="SharkChat", stock=gtk.STOCK_FIND, tooltip="SharkChat")
+            label="SharkChat", stock=gtk.STOCK_NETWORK, tooltip="SharkChat")
 
         component.get("Preferences").add_page("SharkChat", self.glade.get_widget("prefs_box"))
         component.get("PluginManager").register_hook("on_apply_prefs", self.on_apply_prefs)
