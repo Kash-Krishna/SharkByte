@@ -113,7 +113,7 @@ def search_kat(query, hdr):
         row = (torrent_name, total_size, seeder, leecher, uploader, date_and_time, magnet_link);
         treasures.append(row)
         torrent_count+=1
-        cursor.execute("INSERT OR IGNORE INTO local_youtor VALUES (?,?,?,?,?,?,?)", row);
+        cursor.execute("INSERT OR IGNORE INTO torrents VALUES (?,?,?,?,?,?,?)", row);
     #end for loop
     conn.close
 

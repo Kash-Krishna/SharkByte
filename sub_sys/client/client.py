@@ -1,12 +1,11 @@
 import socket, sys, os, time, sqlite3, subprocess
-from shark import Shark #sharks are users
-#move crawler dir(?)
-#add path
+#from shark import Shark #sharks are users
+import cPickle as pickle
 #change crawler db path
 
 HOST = 'localhost'
 PORT = 5000
-BUFFER_SIZE = 2048
+BUFFER_SIZE = 4096
 
 
 """ Send command to server through socket
@@ -42,11 +41,15 @@ def menu():
     send server "RETRIEVE:UID:TAGS"
     INSERT all msg into msg.db
 """
-def retrieve_messages(sock, uid, tags):
+def retrieve_messages(sock, uid, tags, torrent_db):
+    #RETRIEVE, UID, LIST_OF_TAGS
     command = ("RETRIEVE", uid, tags)
     jar = pickle.dumps(command)
     sock.send(jar)
     data = pickle.loads(sock.recv(BUFFER_SIZE))
+    print data
+    for d in data:
+        torrent_db.execute('''INSERT OR IGNORE INTO torrents VALUES(?,?,?,?,?,?,?)''', d)
     
 #end retrieve_messages
 
@@ -56,9 +59,9 @@ def retrieve_messages(sock, uid, tags):
 def update_loots(sock, sub_list, torrent_db):
     #go through sub_list
     for sub in sub_list:
-        proc = Popen("python ./webcrawler/crawler kat " + sub)
+        proc = subprocess.Popen("python ./webcrawler/crawler kat "+sub)
         proc.wait()
-            
+
     return
 
 """ Send 'Write_Message' as command to server
@@ -76,19 +79,30 @@ def write_message(sock, uid, message_db):
     #prompt user for message
     msg = raw_input("Message to send: ")
     #send to server
-    command = "WRITE_MESSAGE:" + msg + ":" + uid + ":" + tag_or_id
-    data = send_to_server(command, sock)
-    if data
+    command = "WRITE_MESSAGE:" + uid + ":" + msg + ":" + tag_or_uid
+    sock.send(command)
+    data = pickle.loads(sock.recv(BUFFER_SIZE))
+    print data
+    if data:
+        print "SUCCESS"
+    else:
+        print "FAILED"
 
 def get_sub_list():
     #read from subl_list.txt for list of subs
     sub_list = []
+    #CHANGE ABS PATH
+    #with open("~/Desktop/Deluge/youtor/deluge/scripts/subscription/subscription/data/sub.txt") as f_sub:
     with open("sub_list.txt") as f_sub:
         temp_sub = f_sub.readlines()
     #get rid of '\n'
+    #get "Names:" only
     for s in temp_sub:
-        sub_list.append(s.strip())
-    
+        if "Name: " in s:
+            s = s[6:]
+            s = s.replace(" ", "%20")
+            sub_list.append(s.strip())
+        
     return sub_list
 
 def get_group_tags():
@@ -118,11 +132,9 @@ if __name__ == "__main__":
     #read from uid.txt
     uid_text = open("uid.txt")
     uid = uid_text.read()
-    #validate uid (?)
     #get subscription list from text file
     #get group tags from text file
     sub_list = get_sub_list()
-    sys.exit()
     group_tags = get_group_tags()
     
     #create client side tables in db, use IF NOT EXISTS
@@ -134,7 +146,7 @@ if __name__ == "__main__":
             (msg_id INT PRIMARY KEY,
              time_sent TEXT NOT NULL,
              msg TEXT, 
-             sender_uid TEXT NOT NULL, 
+             author_uid TEXT NOT NULL, 
              tag TEXT);''')
     
     #set up torrents db. 
@@ -148,20 +160,16 @@ if __name__ == "__main__":
              uploader TEXT,
              upload_date_and_time TEXT,
              magnet_link TEXT PRIMARY KEY NOT NULL);''')
-    
     #retrieve any Q'd Messages
-    retrieve_messages(server_sock,uid,group_tags)
-    
+    retrieve_messages(server_sock,uid,group_tags, torrents_cursor)
     #start main loop
     while True:
         option = menu()
         if option == "U": #update torrents, web crawler
-            update_loots(server_sock, trrent_cursor)
+            update_loots(server_sock,uid, torrents_cursor)
         elif option == "S": #write a message to send
-            wriet_message(server_sock, message_cursor)
+            write_message(server_sock, uid, messages_cursor)
         elif option == "Q": #quit client 
             sys.exit()
-        #break for testing purposes, only checking one function at a time
-        break
         
     #exiting main
