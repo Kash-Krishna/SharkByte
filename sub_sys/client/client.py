@@ -59,7 +59,7 @@ def retrieve_messages(sock, uid, tags, torrent_db):
 def update_loots(sock, sub_list, torrent_db):
     #go through sub_list
     for sub in sub_list:
-        proc = subprocess.Popen("python ./webcrawler/crawler kat "+sub)
+        proc = subprocess.Popen("python ../../webcrawler/crawler.py kat "+sub)
         proc.wait()
 
     return
@@ -82,11 +82,7 @@ def write_message(sock, uid, message_db):
     command = "WRITE_MESSAGE:" + uid + ":" + msg + ":" + tag_or_uid
     sock.send(command)
     data = pickle.loads(sock.recv(BUFFER_SIZE))
-    print data
-    if data:
-        print "SUCCESS"
-    else:
-        print "FAILED"
+    return
 
 def get_sub_list():
     #read from subl_list.txt for list of subs
