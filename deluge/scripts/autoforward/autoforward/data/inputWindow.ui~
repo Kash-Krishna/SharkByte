@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="2.16"/>
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkVBox" id="root">
+    <property name="visible">True</property>
+    <property name="spacing">6</property>
+
+    <child>
+      <object class="GtkLabel" id="title1">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">&lt;b&gt;Name:&lt;/b&gt; </property>
+        <property name="use_markup">True</property>
+      </object>
+      <packing>
+        <property name="position">0</property>
+      </packing>
+    </child>
+
+    <child>
+      <object class="GtkEntry" id="name">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="invisible_char">•</property>
+      </object>
+      <packing>
+        <property name="position">1</property>
+      </packing>
+    </child>
+
+    <child>
+      <object class="GtkLabel" id="title2">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">&lt;b&gt;Uploader:&lt;/b&gt; </property>
+        <property name="use_markup">True</property>
+      </object>
+      <packing>
+        <property name="position">2</property>
+      </packing>
+    </child>
+
+    <child>
+      <object class="GtkEntry" id="uploader">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="invisible_char">•</property>
+      </object>
+      <packing>
+        <property name="position">3</property>
+      </packing>
+    </child>
+   
+  </object>
+</interface>

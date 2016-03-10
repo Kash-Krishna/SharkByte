@@ -49,21 +49,23 @@ from twisted.internet import defer
 
 from common import get_resource
 
+import os
 
-class Make_Subscription(gtk.Dialog):
-    """Input to make a subscription txt file"""
+
+class AutoForward(gtk.Dialog):
+    """Input to start autoforwarding"""
     
     def __init__(self):
-        super(Make_Subscription, self).__init__(title="Add a Subscription",
+        super(AutoForward, self).__init__(title="Start AutoForwarding",
             parent = component.get("MainWindow").window,
             flags = (gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT | gtk.DIALOG_NO_SEPARATOR),
-            buttons = ("Cancel", gtk.RESPONSE_NO, "Add Subscription", gtk.RESPONSE_YES)
+            buttons = ("Cancel", gtk.RESPONSE_NO, "Add box", gtk.RESPONSE_YES)
         )
 
         self.connect("delete-event", self._on_delete_event)
         self.connect("response", self._on_response)
 
-        ui_file = "subscription.ui"
+        ui_file = "inputWindow.ui"
         self._load_ui(ui_file)
 
         self.set_default_response(gtk.RESPONSE_YES)
@@ -73,17 +75,17 @@ class Make_Subscription(gtk.Dialog):
         self.nameP.set_activates_default(True)
         self.nameP.grab_focus()
 
-        self.uloaderP = self.builder.get_object("uploader")
-        self.uloaderP.set_activates_default(True)
-        self.uloaderP.grab_focus()
+        self.addrP = self.builder.get_object("address")
+        self.addrP.set_activates_default(True)
+        self.addrP.grab_focus()
    
     @property
     def p_name(self):
         return self.nameP.get_text()
 
     @property
-    def p_uploader(self):
-        return self.uloaderP.get_text()
+    def p_address(self):
+        return self.addrP.get_text()
 
     def _load_ui(self, ui_file):
         """Load content using root object from ui file """
@@ -106,31 +108,27 @@ class Make_Subscription(gtk.Dialog):
         self.deferred = defer.Deferred()
         self.show()
         return self.deferred
-    
+
 
 class GtkUI(GtkPluginBase):
     def enable(self):
         self.glade = gtk.glade.XML(get_resource("config.glade"))
         self.plugin_manager = component.get("PluginManager")
         self.tbar_separator = self.plugin_manager.add_toolbar_separator()
-        self.tbar_sub = self.plugin_manager.add_toolbar_button(self.Make_Sub,
-            label="Subbing..", stock=gtk.STOCK_ADD, tooltip="adding subscription file")
-
-    def disable(self):    
-        self.plugin_manager.remove_toolbar_button(self.tbar_sub)
+        self.tbar_aforw = self.plugin_manager.add_toolbar_button(self.AutoForwardUI,
+            label="setup forwarding", stock=gtk.STOCK_ADD, tooltip="start the forwarding protocol")
+        
+    def disable(self):
+        self.plugin_manager.remove_toolbar_button(self.tbar_aforw)
         self.plugin_manager.remove_toolbar_button(self.tbar_separator)
 
-    @defer.inlineCallbacks    
-    def Make_Sub(self, widget):
-        """Call UI to add Subscription"""
-        subWindow = Make_Subscription()
-        response = yield subWindow.run()
+    @defer.inlineCallbacks
+    def AutoForwardUI(self, widget):
+        inputWindow = AutoForward()
+        response = yield inputWindow.run()
 
         if response == gtk.RESPONSE_YES:
-            nameP = subWindow.p_name
-            uloaderP = subWindow.p_uploader
-            f = open("/root/Desktop/Deluge/youtor/deluge/scripts/subscription/subscription/data/sub.txt", "a")
-            f.write("Name: " + nameP + "\nUploader: " + uloaderP + "\n\n")
-            f.close()
-
-        
+            nameP = inputWindow.p_name
+            addrP = inputWindow.p_address
+            os.system("python forwarding.py " + addrP + " " + nameP)
+            

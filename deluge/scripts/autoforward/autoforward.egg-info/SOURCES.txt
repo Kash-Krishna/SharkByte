@@ -1,0 +1,13 @@
+setup.py
+autoforward/__init__.py
+autoforward/common.py
+autoforward/core.py
+autoforward/gtkui.py
+autoforward/webui.py
+autoforward.egg-info/PKG-INFO
+autoforward.egg-info/SOURCES.txt
+autoforward.egg-info/dependency_links.txt
+autoforward.egg-info/entry_points.txt
+autoforward.egg-info/top_level.txt
+autoforward/data/autoforward.js
+autoforward/data/config.glade

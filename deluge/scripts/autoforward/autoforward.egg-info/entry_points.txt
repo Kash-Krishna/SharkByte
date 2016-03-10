@@ -1,0 +1,8 @@
+
+    [deluge.plugin.core]
+    autoforward = autoforward:CorePlugin
+    [deluge.plugin.gtkui]
+    autoforward = autoforward:GtkUIPlugin
+    [deluge.plugin.web]
+    autoforward = autoforward:WebUIPlugin
+    
