@@ -43,7 +43,7 @@ def search_kat(query, hdr):
         if ('.html' in l):
             torrents.append(l)
     #make Connection with database
-    db_conn = sqlite3.connect("../sub_sys/client/torrents.db", isolation_level=None)
+    db_conn = sqlite3.connect("torrents.db", isolation_level=None)
     db_conn.text_factory = str
     cursor = db_conn.cursor()
     torrent_count = 0

@@ -1,22 +1,11 @@
-import socket, sys, os, time, sqlite3, subprocess
-#from shark import Shark #sharks are users
+import socket, sys, os, time, sqlite3, subprocess, datetime
 import cPickle as pickle
+from thread import *
 #change crawler db path
 
-HOST = 'localhost'
-PORT = 5000
-BUFFER_SIZE = 4096
-
-
-""" Send command to server through socket
-    returns recv'd data parsed into a list
-"""
-def send_to_server(command, sock):
-    jar = pickle.dumps(command)
-    sock.send(jar)
-    rdata = pickle.loads(sock.recv(BUFFER_SIZE))
-    #parse rdata into list
-    return rdata
+HOST = 'localhost' #change to server ip
+PORT = 5000        #change to port used by server
+BUFFER_SIZE = 8000
 
 """ Print out the menu
     ask users one to pick an option U, E, S
@@ -27,41 +16,58 @@ def send_to_server(command, sock):
 """
 def menu():
     while 1:
-        print "Update Torrent list\t\t(U)"
-        print "Edit Subscription\t\t(E)"
-        print "Follow or unfollow Shivers\t(F)"
         print "Send a Message\t\t\t(S)"
         print "Quit\t\t\t\t(Q)"
         option = raw_input()
-        if option == "U" or option == "E" or option == "S" or option == "Q":
+        if option == "S" or option == "Q":
             return option
         else:
             print "Invalid option!"
+
 """ Retrieve Q'd Messages from server
     send server "RETRIEVE:UID:TAGS"
     INSERT all msg into msg.db
 """
-def retrieve_messages(sock, uid, tags, torrent_db):
+def retrieve_messages(sock, uid, tags, message_db):
     #RETRIEVE, UID, LIST_OF_TAGS
     command = ("RETRIEVE", uid, tags)
     jar = pickle.dumps(command)
     sock.send(jar)
     data = pickle.loads(sock.recv(BUFFER_SIZE))
-    print data
     for d in data:
-        torrent_db.execute('''INSERT OR IGNORE INTO torrents VALUES(?,?,?,?,?,?,?)''', d)
+        print d
+        message_db.execute('''INSERT OR IGNORE INTO messages VALUES(?,?,?,?,?)''', d)
     
 #end retrieve_messages
 
+
+""" Daemon Thread running in background for crawler
+    running update_loots once user log on
+    check for 30 min difference of time.
+    re run crawler if > 30min
+"""
+def crawler_thread(sub_list, torrent_db):
+    start_time = datetime.datetime.now()
+    while True:
+        time_now = datetime.datetime.now()
+        time_diff = start_time - time_now
+        if time_diff > datetime.timedelta(minutes=30) or time_diff < datetime.timedelta(seconds=5):
+            update_loots(sub_list, torrent_db)
+
+#end crawler_thread()
+   
 """ Send 'Get_Torrents' as command to server
     insert list of recv data into torrent db
+    run this funct in a separate thread. checking every 30min for a re-run
 """
-def update_loots(sock, sub_list, torrent_db):
+def update_loots(sub_list, torrent_db):
     #go through sub_list
+    print "getting sweet loots!"
     for sub in sub_list:
-        proc = subprocess.Popen("python ../../webcrawler/crawler.py kat "+sub)
+        command = "python crawler.py kat " + sub
+        proc = subprocess.Popen(command,shell=True)
+        #proc = subprocess.Popen("sudo python ~/sharkByte/web_crawler/crawler.py kat "+sub, shell=True)
         proc.wait()
-
     return
 
 """ Send 'Write_Message' as command to server
@@ -81,8 +87,14 @@ def write_message(sock, uid, message_db):
     #send to server
     command = "WRITE_MESSAGE:" + uid + ":" + msg + ":" + tag_or_uid
     sock.send(command)
-    data = pickle.loads(sock.recv(BUFFER_SIZE))
-    return
+    data = sock.recv(BUFFER_SIZE)
+    p_data = data.split(":")
+    if p_data[0] == "SUCCESS":
+        print p_data[0] + " " + p_data[1] + '\n'
+        return
+    else:
+        print "ERROR: Fail to send message"
+        return
 
 def get_sub_list():
     #read from subl_list.txt for list of subs
@@ -157,15 +169,15 @@ if __name__ == "__main__":
              upload_date_and_time TEXT,
              magnet_link TEXT PRIMARY KEY NOT NULL);''')
     #retrieve any Q'd Messages
-    retrieve_messages(server_sock,uid,group_tags, torrents_cursor)
+    retrieve_messages(server_sock,uid,group_tags, messages_cursor)
+    #run crawler thread in daemon thread
+    thread = start_new_thread(crawler_thread,(sub_list, torrents_cursor))
     #start main loop
     while True:
         option = menu()
-        if option == "U": #update torrents, web crawler
-            update_loots(server_sock,uid, torrents_cursor)
-        elif option == "S": #write a message to send
+        if option == "S": #write a message to send
             write_message(server_sock, uid, messages_cursor)
         elif option == "Q": #quit client 
             sys.exit()
-        
+    os.waitpid()
     #exiting main
