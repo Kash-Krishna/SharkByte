@@ -77,8 +77,9 @@ def update_loots(sub_list, torrent_db):
 """
 def write_message(sock, uid, message_db):
     msg = ""
-    time_sent = ""
+    time_sent = datetime.datetime.now()
     tag_or_id = ""
+    msg_id_col = None
     #ping server time
     #send to uid/tag
     tag_or_uid = raw_input("Send Message to: ")
@@ -90,6 +91,9 @@ def write_message(sock, uid, message_db):
     data = sock.recv(BUFFER_SIZE)
     p_data = data.split(":")
     if p_data[0] == "SUCCESS":
+        #INSERT INTO MESSAGE DB
+        insert_row = (msg_id_col, time_sent, msg, uid, tag_or_uid)
+        message_db.execute('''INSERT OR IGNORE INTO messages VALUES(?,?,?,?,?)''', insert_row);
         print p_data[0] + " " + p_data[1] + '\n'
         return
     else:
