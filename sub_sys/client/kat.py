@@ -58,7 +58,7 @@ def search_kat(query, hdr):
                 break
             except HTTPError, error_num:
                 #output error message
-                print "Error! " + str(error_num) + "\n\tAt: " + url + t  
+                crawler_log.write( "Error! " + str(error_num) + "\n\tAt: " + url + t )
         if http_tr.info().get('Content-Encoding') == 'gzip':
             t_buf = StringIO(http_tr.read())
             t_f = gzip.GzipFile(fileobj=t_buf)
@@ -96,7 +96,7 @@ def search_kat(query, hdr):
             uploader = str(kitten_soup.find('a',{'class':'plain'}).get('href'))
             uploader = uploader[6:-1]
         except:
-            print "Error site not accessible"
+            crawler_log.write("Error site not accessible")
             continue
         date_and_time = str(kitten_soup.find('time',{'class':'timeago'}).get('datetime'))
 
@@ -117,7 +117,7 @@ def search_kat(query, hdr):
     #end for loop
     db_conn.close
 
-    print "Total of " + torrent_count + " torrents"
+    crawler_log.write("Total of " + torrent_count + " torrents")
 
 
 if __name__ == '__main__':
@@ -129,5 +129,5 @@ if __name__ == '__main__':
        'Accept-Language': 'en-US,en;q=0.8',
        'Connection':'keep-alive'
       }
-    
+    crawler_log = open('crawler_log.txt','w')
     search_kat("", hdr)

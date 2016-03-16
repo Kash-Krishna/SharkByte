@@ -6,7 +6,6 @@ HOST = 'localhost'    #HOST IP
 PORT = 5000           #Port used to listen for client
 BUFFER_SIZE = 8000    #Max buffersize to recv
 online_sharks = {}    #List of all online uids
-#TOD: MAKE SERVER_LOG.TXT
 #------------------ SET UP -----------------------
 #set up database
 messages_db = sqlite3.connect('messages.db',isolation_level=None)
